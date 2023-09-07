@@ -13,32 +13,41 @@
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
+TYPES = [
+  'fire',
+  'electric',
+  'normal',
+  'ghost',
+  'psychic',
+  'water',
+  'bug',
+  'dragon',
+  'grass',
+  'fighting',
+  'ice',
+  'flying',
+  'poison',
+  'ground',
+  'rock',
+  'steel'
+].sort.freeze
+
 class Pokemon < ApplicationRecord
-    validates :number, uniqueness: {message: "'%{value}' is already in use."}, length: {minimum: 1}
+    validates :number, uniqueness: {message: "'%{value}' is already in use."}, numericality: {greater_than: 0}
     validates :name, uniqueness: {message: "'%{value}' is already in use."}, length: {in: 3..255}
-    validates :attack, length: {in: 0..100}
-    validates :defense, length: {in: 0..100}
+    validates :attack, numericality: {in: 0..100}
+    validates :defense, numericality: {in: 0..100}
     validates :poke_type, inclusion: { in: TYPES, message: "'${value}' is not a valid pokemon type" }
     validates :image_url, presence: true 
     validates :captured, inclusion: [true, false]
 
-      TYPES = [
-    'fire',
-    'electric',
-    'normal',
-    'ghost',
-    'psychic',
-    'water',
-    'bug',
-    'dragon',
-    'grass',
-    'fighting',
-    'ice',
-    'flying',
-    'poison',
-    'ground',
-    'rock',
-    'steel'
-  ].sort.freeze
+    has_many :poke_moves
+    has_many :moves, through: :poke_moves
+    has_many :items
+
+    # has_many: :moves,
+    # through: :poke_moves,
+    # source: 
+     
 
 end
